@@ -19,8 +19,11 @@ function log(x){
 
 function square2(x, func){
     func?.(x);
+    console.log(a+" her er a")
+    var c=6;
     return x*x;
 }
+
 
 console.log(square2(10, log));
 
@@ -48,9 +51,11 @@ switch (n){
         console.log("hej " + n);
     case 6:
         console.log("hej " + n);
+        
         break;
     case 7:
         console.log("hej " + n);
         break;
 
 }
+console.log(c+" det her er c")
