@@ -42,12 +42,13 @@ function renderPage(title,heading,demoString) {
     return string
 } 
 
-let s3= renderPage("Hej","Med","dig");
+let s3= renderPage("vand","er","vådt");
 console.log(s3);
 
 //Exercise 4
 function avg(array){
     let sum = 0;
+    array.reduce()
     for(let element of array)
         sum+=element.length;
 
@@ -56,3 +57,4 @@ function avg(array){
 s4= ["hejsa","med","dig!"];
 
 console.log(avg(s4));
+
