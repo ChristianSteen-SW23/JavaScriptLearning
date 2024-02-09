@@ -1,0 +1,6 @@
+// Måder man kan laver functioner på
+
+function hej1(text){
+    console.log(text+"hej");
+    return true
+}
