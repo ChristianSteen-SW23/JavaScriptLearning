@@ -4,6 +4,7 @@
 //We use EC6 modules!
 export {validateBMIRecordForm, validateBMIStatForm, renderHTMLBMIUpdatePage, renderHTMLBMIStatPage,recordBMI};
 import { ValidationError } from "./router.js";
+import fs from "fs";
 
 /* ***************************************************
  * Application code for the BMI tracker application 
@@ -51,7 +52,6 @@ function validateUserName(userName){
 //(if the data cannot be validated the router catch the exception and 
 // will send an appropriate HTTP Error Response code)
 function validateBMIRecordForm(bmiData){
-
   console.log("Validating"); console.log(bmiData);
  
   if(bmiData.has("userName") && bmiData.has("weight") && bmiData.has("height") && bmiData.has("age") && bmiData.has("gender")){
@@ -108,8 +108,16 @@ function calcBMI(height,weight){
    Higher index means newer data record: you can insert by simply 
   'push'ing new data records */
 
-let sampleBMIData={userName: "Mickey", height: 180, weight:90};
-let bmiDB=[sampleBMIData]; //
+  let bmiDB = [];
+  function loadDB(){
+    try{
+      bmiDB =JSON.parse(fs.readFileSync('node/db.json', 'utf-8'));
+    } catch(error){
+      let sampleBMIData={};
+      bmiDB=[sampleBMIData]; 
+    }
+  }
+
 
 
 
@@ -155,15 +163,18 @@ function calcBMIChange(newBMIEntry, previousBMIEntry){
 //will be used by the render functions. That functionality could be moved there in this APP-as-SITE version.
 
 function recordBMI(bmiData){
+  loadDB();
   bmiDB.push(bmiData);
   console.log(bmiData);
   console.log(bmiData.age+"----------------------------");
+  let jsonString = JSON.stringify(bmiDB);
   let bmiStatus={};
   bmiStatus.userName=bmiData.userName;
   bmiStatus.bmi=calcBMI(bmiData.height, bmiData.weight);
   bmiStatus.delta=calcDelta(bmiData.userName);
   bmiStatus.gender=bmiData.gender;
   bmiStatus.age = bmiData.age;
+  fs.writeFileSync('node/db.json', jsonString);
   return bmiStatus;
 }
 
