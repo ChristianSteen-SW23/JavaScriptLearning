@@ -48,6 +48,7 @@ startServer();
             jsonResponse(res,date);
           }
           break;
+          
           case "bmi-records": 
             if(pathElements.length===2) { 
               try{ // "/bmi-records?name=xxx"
@@ -55,7 +56,18 @@ startServer();
                 htmlResponse(res,renderHTMLBMIStatPage(validBMIStatData));
               }
               catch(err){reportError (res,err);}
-           } 
+            } 
+           else reportError(res, new Error(NoResourceError)); 
+           break;
+
+           case "bmi-records2": 
+            if(pathElements.length===2) { 
+              try{ // "/bmi-records?name=xxx"
+                let validBMIStatData=validateBMIStatForm(searchParms);
+                htmlResponse(res,renderHTMLBMIStatPage(validBMIStatData));
+              }
+              catch(err){reportError (res,err);}
+            } 
            else reportError(res, new Error(NoResourceError)); 
            break;
            default: //for anything else we assume it is a file to be served
@@ -64,6 +76,8 @@ startServer();
         }//path
       }//switch GET URL
       break;
+
+
       default:
        reportError(res, new Error(NoResourceError)); 
     } //end switch method

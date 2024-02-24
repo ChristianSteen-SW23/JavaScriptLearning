@@ -29,7 +29,7 @@
       <label for="genderIDK_id">IDK</label> 
       <input type="radio" name="gender" id="genderIDK_id" value="IDK" required>
  
-  <input type="submit" id="submitBtn_id" value="Record">
+      <input type="submit" id="submitBtn_id" value="Record">
 </div>
  </fieldset> 
 </form>
@@ -50,6 +50,20 @@
 </form>
 </section>
 
+
+<section> 
+  <h1 id="id2"> IWP BMI-Statistics-tracker</h1>
+  <form id="bmiStausForm_id"  action="date" method="get"> 
+    <fieldset>
+      <legend>Personal information:</legend>
+      <div class="myFormLayout"> <!-- Hmm, fieldset seems not too happy to work with grid layout used for the form??-->
+      <label for="tracker_name_id"> Name</label>
+      <input type="text"  name="userName" id="tracker_name_id" value="Mickey" required minlength="1" maxlength="30"> 
+  <input type="submit" id="submitTracker_id" value="Get Stats">
+</div>
+ </fieldset> 
+</form>
+</section>
 
 </body>
 </html>
