@@ -2,7 +2,7 @@
 //to keep it comphrehensible. 
 
 //We use EC6 modules!
-export {validateBMIRecordForm, validateBMIStatForm, renderHTMLBMIUpdatePage, renderHTMLBMIStatPage,recordBMI};
+export {validateBMIRecordForm, validateBMIStatForm, renderHTMLBMIUpdatePage, renderHTMLBMIStatPage,recordBMI,renderHTMLBMIStatPageAll};
 import { ValidationError } from "./router.js";
 import fs from "fs";
 
@@ -108,16 +108,15 @@ function calcBMI(height,weight){
    Higher index means newer data record: you can insert by simply 
   'push'ing new data records */
 
-  let bmiDB = [];
-  function loadDB(){
-    try{
-      bmiDB =JSON.parse(fs.readFileSync('node/db.json', 'utf-8'));
-    } catch(error){
-      let sampleBMIData={};
-      bmiDB=[sampleBMIData]; 
-    }
+let bmiDB;
+function loadDB(){
+  try{
+    bmiDB =JSON.parse(fs.readFileSync('node/db.json', 'utf-8'));
+  } catch(error){
+    bmiDB=[]; 
   }
-
+}
+loadDB();
 
 
 
@@ -125,7 +124,7 @@ function calcBMI(height,weight){
 //return 0 if only one or no record is found
 //This solution uses C-like JS, and can be simplified using filter and map, indexOf
 function calcDelta(name){
-  console.log("looking up "+name);
+  //console.log("looking up "+name);
   console.log(bmiDB);
   let newBMIIndex=-1;
   let previousBMIIndex=-1;
@@ -134,19 +133,21 @@ function calcDelta(name){
   for(i=bmiDB.length-1; i>=0;i--)
    if(bmiDB[i].userName===name) {
      newBMIIndex=i;
-     console.log("NEW "+i);
+     //console.log("NEW "+i);
      break;
    } 
    //search for second oldest
    for(--i;i>=0;i--) 
      if(bmiDB[i].userName===name) {
       previousBMIIndex=i;
-      console.log("PREV "+i);
+      //console.log("PREV "+i);
       break;
      } 
-   if(newBMIIndex>=0 && previousBMIIndex>=0) 
+   if(newBMIIndex>=0 && previousBMIIndex>=0) {
+     console.log("JEG HAR FUNDET EN DELTA------------------------------------------------------------------")
      return round2Decimals(calcBMI(bmiDB[newBMIIndex].height, bmiDB[newBMIIndex].weight)-
      calcBMI(bmiDB[previousBMIIndex].height, bmiDB[previousBMIIndex].weight));   
+   }
    else 
    return 0;
 }
@@ -163,17 +164,19 @@ function calcBMIChange(newBMIEntry, previousBMIEntry){
 //will be used by the render functions. That functionality could be moved there in this APP-as-SITE version.
 
 function recordBMI(bmiData){
-  loadDB();
-  bmiDB.push(bmiData);
-  console.log(bmiData);
-  console.log(bmiData.age+"----------------------------");
-  let jsonString = JSON.stringify(bmiDB);
+  bmiData.delta=calcDelta(bmiData.userName)
+
+  // Makes Status for the html
   let bmiStatus={};
   bmiStatus.userName=bmiData.userName;
   bmiStatus.bmi=calcBMI(bmiData.height, bmiData.weight);
-  bmiStatus.delta=calcDelta(bmiData.userName);
+  bmiStatus.delta = bmiData.delta
   bmiStatus.gender=bmiData.gender;
   bmiStatus.age = bmiData.age;
+
+  // Saves to DB
+  bmiDB.push(bmiData);
+  let jsonString = JSON.stringify(bmiDB);
   fs.writeFileSync('node/db.json', jsonString);
   return bmiStatus;
 }
@@ -226,20 +229,47 @@ function renderHTMLBMIStatPage(validBMIStatData){
   return page;
 }
 
+function renderHTMLBMIStatPageAll(){
+  console.log("Got here-------------------------------------");
+  let setOfNames=new Set(bmiDB.map(obj => obj.userName));;
+
+  console.log(setOfNames);
+  // Startes seting up HTML page
+  let page=renderHTMLHdr(`BMI Statistics for all users`,["/css/simple.css"]);
+  page+=`<body>`
+  for(let entry of setOfNames){
+    console.log("Name: "+entry+" -------------------------------------");
+    page+=`
+    <section>
+    ${renderHTMLBMITable(entry)}
+    </section>`
+    page+=`<br>`
+  }
+  
+  page+=`<p><a href="/">Restart</a> | <a href="/html/help.html">Help</a></p>
+  </body>`
+  return page;
+}
+
 function renderHTMLBMITable(userName){
   const userEntries=selectUserEntries(userName);
 
  let bmiTable=`
   <table id="scoretable">
-  <thead>
-  <tr>
-  <th colspan="3">BMI Stats for user ${userName} </th>
-</tr>
-    <tr><th>Weight </th><th>BMI</th><th>Delta</th><th>Age</th></tr>
-  </thead>
+    <thead>
+      <tr>
+      <th colspan="5">BMI Stats for user ${userName} </th>
+      </tr>
+      <tr><th>Weight</th><th>Height</th><th>BMI</th><th>Delta</th><th>Age</th></tr>
+    </thead>
   <tbody>`
-  for(let entry of userEntries) 
-    bmiTable+= `<tr><td> ${entry.weight}</td> <td> ${calcBMI(entry.height,entry.weight)} </td><td> ${calcDelta(userName)} </td><td> ${entry.age} </td></tr>`
+    for(let entry of userEntries) 
+      bmiTable+= `<tr>
+                    <td> ${entry.weight}</td>
+                    <td> ${entry.height}</td> 
+                    <td> ${calcBMI(entry.height,entry.weight)}</td>
+                    <td> ${entry.delta} </td><td> ${entry.age}</td>
+                  </tr>`
   bmiTable+=`</tbody></table>`
   return bmiTable;
 }

@@ -1,5 +1,5 @@
 export {ValidationError, NoResourceError, processReq};
-import {validateBMIRecordForm, validateBMIStatForm, renderHTMLBMIStatPage, renderHTMLBMIUpdatePage, recordBMI} from "./app.js";
+import {validateBMIRecordForm, validateBMIStatForm, renderHTMLBMIStatPage, renderHTMLBMIUpdatePage, recordBMI,renderHTMLBMIStatPageAll} from "./app.js";
 import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
 //import * as server from "./server.js";
 const ValidationError="Validation Error";
@@ -36,7 +36,7 @@ startServer();
         break; //POST URL
       case "GET":{
         let pathElements=queryPath.split("/"); 
-        console.log(pathElements);
+        console.log(pathElements+"-------------------------------------------");
         //USE "sp" from above to get query search parameters
         switch(pathElements[1]){     
           case "": // 
@@ -58,21 +58,17 @@ startServer();
               catch(err){reportError (res,err);}
             } 
            else reportError(res, new Error(NoResourceError)); 
-           break;
+          break;
 
-           case "bmi-records2": 
-            if(pathElements.length===2) { 
-              try{ // "/bmi-records?name=xxx"
-                let validBMIStatData=validateBMIStatForm(searchParms);
-                htmlResponse(res,renderHTMLBMIStatPage(validBMIStatData));
-              }
-              catch(err){reportError (res,err);}
-            } 
-           else reportError(res, new Error(NoResourceError)); 
-           break;
-           default: //for anything else we assume it is a file to be served
-             fileResponse(res, req.url);
-           break;
+          case "bmi-records-DB": 
+            try{ // "/bmi-records?name=xxx"
+              htmlResponse(res,renderHTMLBMIStatPageAll());
+            }
+            catch(err){reportError (res,err);}
+            break;
+          default: //for anything else we assume it is a file to be served
+            fileResponse(res, req.url);
+            break;
         }//path
       }//switch GET URL
       break;
