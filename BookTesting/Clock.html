@@ -15,6 +15,9 @@
 
 <body>
     <h1>Clock under:</h1>
+    <h1>Clock under:</h1>
+    <h1>Clock under:</h1>
+    <h1>Clock under:</h1>
     <span id="clock"></span>
 
     <script>
@@ -22,11 +25,14 @@
             let clock = document.querySelector("#clock");
             let now = new Date();
             clock.textContent = now.toLocaleTimeString();
-
         }
         displayTime();
         setInterval(displayTime,1000);
+        let name = "Per";
+        document.querySelector('h1').innerHTML = "hello"+"<br>"+name;
+        
     </script>
+
 </body>
 
 </html>
