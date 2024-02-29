@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+    #clock{
+        background: #ddf;
+        padding: 15px;
+        border: solid black 2px;
+        border-radius: 10px;
+    }
+</style>
+
+</head>
+
+<body>
+    <h1>Clock under:</h1>
+    <span id="clock"></span>
+
+    <script>
+        function displayTime(){
+            let clock = document.querySelector("#clock");
+            let now = new Date();
+            clock.textContent = now.toLocaleTimeString();
+
+        }
+        displayTime();
+        setInterval(displayTime,1000);
+    </script>
+</body>
+
+</html>
