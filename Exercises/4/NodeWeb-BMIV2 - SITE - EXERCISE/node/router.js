@@ -23,21 +23,6 @@ startServer();
     let queryPath=decodeURIComponent(url.pathname); //Convert uri encoded special letters (eg æøå that is escaped by "%number") to JS string
   
     switch(req.method){
-      case "GET": {
-        let pathElements=queryPath.split("/"); 
-        console.log(pathElements[1]);
-        console.log("DER ER BLEVET FECHTED-----------------------------------")
-         switch(pathElements[1]){
-          case "beer":
-            console.log("DER ER BLEVET FECHTED BEER-----------------------------------")
-            jsonResponse(res, beerTypes);
-            break;
-          default: 
-            console.error("Resource doesn't exist");
-            reportError(res, new Error(NoResourceError)); 
-          }
-        } 
-        break; //POST URL
       case "POST": {
         let pathElements=queryPath.split("/"); 
         console.log(pathElements[1]);

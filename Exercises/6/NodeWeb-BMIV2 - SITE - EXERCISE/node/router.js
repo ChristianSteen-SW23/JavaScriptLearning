@@ -54,26 +54,10 @@ startServer();
           }
           break;
           case "beer":
-            console.log("DER ER BLEVET FECHTED BEER-----------------------------------")
-            jsonResponse(res, beerTypes);
-            break;          
-          case "bmi-records": 
-            if(pathElements.length===2) { 
-              try{ // "/bmi-records?name=xxx"
-                let validBMIStatData=validateBMIStatForm(searchParms);
-                htmlResponse(res,renderHTMLBMIStatPage(validBMIStatData));
-              }
-              catch(err){reportError (res,err);}
-            } 
-           else reportError(res, new Error(NoResourceError)); 
-          break;
+            console.log("beer- fehct")
 
-          case "bmi-records-DB": 
-            try{ // "/bmi-records?name=xxx"
-              htmlResponse(res,renderHTMLBMIStatPageAll());
-            }
-            catch(err){reportError (res,err);}
-            break;
+            setTimeout(()=>{jsonResponse(res, beerTypes)},1000);
+            break;          
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
             break;
