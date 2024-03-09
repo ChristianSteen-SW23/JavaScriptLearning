@@ -1,6 +1,6 @@
 export {ValidationError, NoResourceError, processReq};
 import {validateBMIRecordForm, validateBMIStatForm, renderHTMLBMIStatPage, renderHTMLBMIUpdatePage, recordBMI,renderHTMLBMIStatPageAll} from "./app.js";
-import {extractJSON, fileResponse, htmlResponse,extractForm,jsonResponse,errorResponse,reportError,startServer} from "./server.js";
+import {fileResponse, htmlResponse,extractForm,jsonResponse,reportError,startServer} from "./server.js";
 //import * as server from "./server.js";
 const ValidationError="Validation Error";
 const NoResourceError="No Such Resource";
@@ -23,21 +23,6 @@ startServer();
     let queryPath=decodeURIComponent(url.pathname); //Convert uri encoded special letters (eg æøå that is escaped by "%number") to JS string
   
     switch(req.method){
-      case "GET": {
-        let pathElements=queryPath.split("/"); 
-        console.log(pathElements[1]);
-        console.log("DER ER BLEVET FECHTED-----------------------------------")
-         switch(pathElements[1]){
-          case "beer":
-            console.log("DER ER BLEVET FECHTED BEER-----------------------------------")
-            jsonResponse(res, beerTypes);
-            break;
-          default: 
-            console.error("Resource doesn't exist");
-            reportError(res, new Error(NoResourceError)); 
-          }
-        } 
-        break; //POST URL
       case "POST": {
         let pathElements=queryPath.split("/"); 
         console.log(pathElements[1]);
@@ -60,7 +45,7 @@ startServer();
         //USE "sp" from above to get query search parameters
         switch(pathElements[1]){     
           case "": // 
-             fileResponse(res,"/html/bmi.html");
+             fileResponse(res,"/html/Øl.html");
              break;
           case "date": {// 
             let date=new Date();
@@ -68,7 +53,10 @@ startServer();
             jsonResponse(res,date);
           }
           break;
-          
+          case "beer":
+            console.log("DER ER BLEVET FECHTED BEER-----------------------------------")
+            jsonResponse(res, beerTypes);
+            break;          
           case "bmi-records": 
             if(pathElements.length===2) { 
               try{ // "/bmi-records?name=xxx"
