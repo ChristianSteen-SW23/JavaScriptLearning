@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>IWP Validation Exercise</title>
+  <meta charset="UTF-8">
+<script>
+function monkeysJump(event) {
+  event.preventDefault()
+  let monkeyInput=document.getElementById("monkeys");
+  let div=document.getElementById("message");
+  console.log(parseInt(monkeyInput.value));
+  if(parseInt(monkeyInput.value) <= "5" && parseInt(monkeyInput.value) >= "1"){
+    div.textContent = "Der er fucking "+ monkeyInput.value + " lorte aber på den seng, jeg håber brakker nakken";
+    console.log("virk")
+  }else{
+    setTimeout(()=>{div.textContent = "NEJ... Stop";},2000);
+  }
+
+}
+
+</script>
+</head>
+<body>
+    <form id="myForm" >
+        How many little monkeys are jumping on the bed? <input type="text" id="monkeys" value="">
+    </form>
+    <p id="Abe">te</p>
+    <div id="message"  > </div> 
+<script>
+    document.getElementById("myForm").addEventListener("submit", monkeysJump);
+</script>
+</body> 
