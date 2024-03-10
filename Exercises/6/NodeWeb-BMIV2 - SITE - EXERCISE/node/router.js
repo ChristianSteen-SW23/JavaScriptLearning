@@ -7,7 +7,8 @@ const NoResourceError="No Such Resource";
 let beerTypes = {
   ales: ["Bitter", "Pale Ale", "Brown Ale", "Trappist", "Porter",  "Weizenbier"],
   lagers:["Pilsner", "Münchener", "Wiener", "Bock", "Porter"],
-  wilds: ["Gueuze", "Faro", "Fruit"]
+  wilds: ["Gueuze", "Faro", "Fruit"],
+  soda: ["Cola","Fanta","Faxi"]
 };
 
 startServer();
@@ -51,13 +52,14 @@ startServer();
             let date=new Date();
             console.log(date);
             jsonResponse(res,date);
-          }
-          break;
-          case "beer":
-            console.log("beer- fehct")
-
+            }
+            break;
+          case "drinkType":
             setTimeout(()=>{jsonResponse(res, beerTypes)},1000);
-            break;          
+            break;  
+          case "ordre":
+            jsonResponse(res, beerTypes);
+            break;        
           default: //for anything else we assume it is a file to be served
             fileResponse(res, req.url);
             break;

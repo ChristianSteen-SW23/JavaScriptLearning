@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <title>IWP Demo</title>
+  <title>Drink Service</title>
   <meta charset="UTF-8">
 </head>
 <body>   
     <form id="beerForm">
         <fieldset> <legend> Vælg Øl Type: </legend>
-                <input type="radio" name="gæringstype" value="ales" checked> Overgæret (Ale)       
-                <input type="radio" name="gæringstype" value="lagers"> Undergæret (Lager)  
-                <input type="radio" name="gæringstype" value="wilds" > Vildtgæret (Lambic)
-                <input id="ølKnap" type="button" value="Start">
+                <input type="radio" name="drinkType" value="ales" checked> Overgæret (Ale)       
+                <input type="radio" name="drinkType" value="lagers"> Undergæret (Lager)  
+                <input type="radio" name="drinkType" value="wilds" > Vildtgæret (Lambic)
+                <input type="radio" name="drinkType" value="soda" > soda
+                <input id="ordreBtn" type="button" value="Ordre">
                 <br>
-                <label for="beerType">Please pick a beer</label>
-                    <select id="ØlSelect" name="ØlSel">
+                <label for="beerType">Please pick a drink type</label>
+                    <select id="beerSel" name="ØlSel">
                         
                     </select>
             </fieldset>
     </form>
-    <p><a href="html/help.html">help</a> | <a href="js/ol.js">js</a></p>
-    <script src="/js/ol.js"></script>    
-    <!--<script src="http://people.cs.aau.dk/~bnielsen/IWP/test.js"></script> -->
-</body>    
+    <p><a href="html/help.html">help</a> | <a href="js/main.js">js</a></p>
+    <script src="/js/main.js"></script>    
+</body>  
 </html>
